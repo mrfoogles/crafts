@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "S",
+        "/"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:wooden_axe"
+        },
+        "S": {
+            "item": "minecraft:string"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "minecraft:wooden_sword",
+        "count": 1
+    }
+}

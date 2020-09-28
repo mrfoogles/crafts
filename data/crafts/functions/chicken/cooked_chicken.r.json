@@ -1,0 +1,16 @@
+{
+	"ingredients": {
+		"raw_chicken": {"count": 1},
+		"potato": {"count": 3}
+	},
+
+	"workstation_blocks": {
+		"#crafts:hot": "~ ~-2 ~"
+	},
+
+	"time": 80,
+
+	"results": {
+		"cooked_chicken": {"count": 1}
+	}
+}
