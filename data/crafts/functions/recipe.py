@@ -70,7 +70,7 @@ def add_from_json(rel_path):
 
     
     function = get_recipe_function(ingredients,results,processing_blocks,time,processing_sound,finished_sound)
-    update = get_update_command(ingredients,function_path)
+    update = get_update_command(ingredients,rel_path.replace(".r.json",""))
 
 
     with open(UPDATE_FUNCTION,"r") as f:
