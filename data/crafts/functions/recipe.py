@@ -6,7 +6,7 @@ import os
 import sys
 import json
 
-UPDATE_FUNCTION = "tick.mcfunction"
+UPDATE_FUNCTION = "update_recipes.mcfunction"
 
 
 def idToItemName(idToChange):
@@ -43,12 +43,12 @@ def process_items(dictionary):
         
     return(processed)
         
-def add_from_json(rel_path): 
+def add_from_json(path,rel_destination): 
 
-    with open(rel_path) as json_file:
+    with open(path) as json_file:
         json_dict = json.loads(json_file.read())
-        
-    function_path = rel_path.replace(".r.json",".mcfunction")
+
+    rel_destination = rel_destination.replace(".r.json",".mcfunction")
     
     ingredients = process_items(json_dict["ingredients"])
     results = process_items(json_dict["results"])   
@@ -70,22 +70,26 @@ def add_from_json(rel_path):
 
     
     function = get_recipe_function(ingredients,results,processing_blocks,time,processing_sound,finished_sound)
-    update = get_update_command(ingredients,rel_path.replace(".r.json",""))
+    update = get_update_command(ingredients,rel_destination.replace(".mcfunction",""))
 
-
-    with open(UPDATE_FUNCTION,"r") as f:
-        if update not in f:
-            with open(UPDATE_FUNCTION,"w") as f_writable:
-                f_writable.write(f.read() + update)
 
     try:
-        with open(function_path,mode="w") as f:
+        with open(UPDATE_FUNCTION,"r") as f:
+            if update not in f.read():
+                with open(UPDATE_FUNCTION,"a") as f_append:
+                    f_append.write("\n" + update)
+    except:
+        with open(UPDATE_FUNCTION,"x") as f:
+            f.write(update)
+
+    try:
+        with open(rel_destination,mode="w") as f:
             f.write(function)
     except:
-        with open(function_path,mode="x") as f:
+        with open(rel_destination,mode="x") as f:
             f.write(function)
             
-    return(function_path)
+    return(rel_destination)
         
 def get_recipe_function(ingredientDict,
                         resultDict,
@@ -212,12 +216,20 @@ class Item(object):
         else:
             detectBy = 'scores={CustomModelData=' + str(self.CustomModelData) + ',count=' + str(countRequired) + '..1000}'
         return(detectBy)
-                
+
+def add_all_at(path):
+    if path.endswith(".r.json"):
+        add_from_json(path,path.replace("recipe_jsons","recipes"))
+    elif "." not in path:
+        for f in os.listdir(path):
+            add_all_at(os.path.join(path,f))
+            
+
 if __name__ == '__main__':
     path = sys.argv[1]
     
-    if path.startswith("/"):
-        raise Exception("Path must be relative!")
+    if not path.startswith("recipe_jsons"):
+        raise Exception("Path must be relative and inside recipe_jsons folder!")
     
-    add_from_json(path)
+    add_all_at(path)
 

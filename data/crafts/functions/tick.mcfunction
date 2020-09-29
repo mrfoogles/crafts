@@ -7,4 +7,4 @@ execute as @e[type=item] store result score @s count run data get entity @s Item
 #Updating CustomModelData for easy access.
 execute as @e[type=item] store result score @s CustomModelData run data get entity @s Item.tag.CustomModelData
 
-#If ingredient there, run recipe-checker. (This is automatically added)
+function crafts:update_recipes

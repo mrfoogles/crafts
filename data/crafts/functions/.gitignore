@@ -1,1 +1,2 @@
-recipes/*
+recipes/*.mcfunction
+update_recipes.mcfunction
