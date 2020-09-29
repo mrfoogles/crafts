@@ -217,19 +217,24 @@ class Item(object):
             detectBy = 'scores={CustomModelData=' + str(self.CustomModelData) + ',count=' + str(countRequired) + '..1000}'
         return(detectBy)
 
-def add_all_at(path):
+def add_all_at(path,logger):
     if path.endswith(".r.json"):
+        logger(f"Processing {path}")
         add_from_json(path,path.replace("recipe_jsons","recipes"))
+        
     elif "." not in path:
         for f in os.listdir(path):
-            add_all_at(os.path.join(path,f))
+            add_all_at(os.path.join(path,f),logger)
             
 
 if __name__ == '__main__':
-    path = sys.argv[1]
+    if len(sys.argv) > 1:
+        path = sys.argv[1]
+    else:
+        path = "recipe_jsons"
     
     if not path.startswith("recipe_jsons"):
         raise Exception("Path must be relative and inside recipe_jsons folder!")
     
-    add_all_at(path)
+    add_all_at(path,print)
 
