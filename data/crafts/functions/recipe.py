@@ -48,7 +48,7 @@ def add_from_json(path,rel_destination):
     with open(path) as json_file:
         json_dict = json.loads(json_file.read())
 
-    rel_destination = rel_destination.replace(".r.json",".mcfunction")
+    rel_destination = rel_destination.replace(".json",".mcfunction")
     
     ingredients = process_items(json_dict["ingredients"])
     results = process_items(json_dict["results"])   
@@ -218,7 +218,7 @@ class Item(object):
         return(detectBy)
 
 def add_all_at(path,logger):
-    if path.endswith(".r.json"):
+    if path.endswith(".json"):
         logger(f"Processing {path}")
         add_from_json(path,path.replace("recipe_jsons","recipes"))
         
